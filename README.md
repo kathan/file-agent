@@ -56,4 +56,21 @@ var Process = require('file-agent'),
         out_fldrs: (array): Array of out folder paths.
         callback (function): Called when out folders have been set.
           returns result true:false
+
+##### setFailedFolder
+      parameters:
+        out_fldrs: (string): Path of failed folder path.
+        callback (function): Called when failed folder has been set.
+          returns result true:false
+          
+##### setFunction
+      parameters:
+        fn: (function): Function to be called for each file that appears in the "in" folder.
+        callback (function): Called when function has been set.
+          returns result true:false
+          
+##### start
+        Call this method to start watching the "in" folder.
     
+##### stop
+        Call this method to stop watching the "in" folder.
