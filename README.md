@@ -1,5 +1,5 @@
 # file-agent
-A lighweight library written in node.js to automate hot folders.
+A lightweight library written in node.js to automate hot folders.
 Example:
 ```js
 var Process = require('file-agent'),
