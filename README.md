@@ -28,7 +28,7 @@ var Process = require('file-agent'),
 ```
 ## API
 ### Constructor
-    #### parameters:
+#### parameters:
         in folder path (string)
         out folder paths (array)
         failed folder path (string)
@@ -44,8 +44,8 @@ var Process = require('file-agent'),
                 FileAgent object
 
 ### FileAgent class
-  #### Functions
-    #### setInFolder 
+  #### Methods
+  #### setInFolder 
       parameters:
         in_fldr: (string): Path of in folder
         callback (function): Called when in folder has been set.
