@@ -21,7 +21,8 @@ var Process = require('file-agent'),
     */
     p = Process(`${__dirname}/in/`, [`${__dirname}/out1/`, `${__dirname}/out2/`], `${__dirname}/failed/`, (eventType, filename, in_folder, out_folders, failed_folder, done)=>{
       // fire this function any time an item appears in the folder
-      var d = new Date()
+      var d = new Date();
+      console.log(d.toString(), in_folder, '->', out_folders[1]);
       done(null, 'out2');
     }, (p, re)=>{
       // process has been created
