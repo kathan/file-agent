@@ -43,8 +43,8 @@ var Process = require('file-agent'),
             returns 
                 FileAgent object
 
-## FileAgent class
-  ### Functions
+### FileAgent class
+  #### Functions
     #### setInFolder 
       parameters:
         in_fldr: (string): Path of in folder
