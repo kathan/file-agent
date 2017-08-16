@@ -15,6 +15,9 @@ var Process = require('file-agent'),
           out_folders: The array of possible out folders
           failed_folder: The folder where failed items will go
           done: Callback that must be called when the file is done being processed.
+            parameters:
+                error
+                out folder
     */
     p = Process(`${__dirname}/in/`, [`${__dirname}/out1/`, `${__dirname}/out2/`], `${__dirname}/failed/`, (eventType, filename, in_folder, out_folders, failed_folder, done)=>{
       // fire this function any time an item appears in the folder
