@@ -15,23 +15,10 @@ FileAgent = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
   this.setInFolder = function(in_fldr, cb){
     var result, is_active = active;
     this.stop();
-    if(!fs.existsSync(in_fldr)){
-      return fs.mkdir(in_fldr, (err)=>{
-        if(!err){
-          in_folder = in_fldr;
-          result = true;
-        }else{
-          result = false;
-        }
-        if(is_active){
-          self.start();
-        }
-        cb(result);
-      });
-      
+    if(ensureFolder(in_fldr)){
+      in_folder = in_fldr;
+      result = true;
     }
-    in_folder = in_fldr;
-    result = true;
     
     if(is_active){
       this.start();
@@ -39,48 +26,29 @@ FileAgent = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
     cb(result);
   }
   
-  this.setOutFolders = function(out_fldrs){
+  this.setOutFolders = function(out_fldrs, cb){
     if(Array.isArray(out_fldrs)){
-      for(var i in out_fldrs){
-        var out_fldr = out_fldrs[i];
-        if(!fs.existsSync(out_fldr)){
-          if(fs.mkdirSync(out_fldr)){
-            var out_ary = out_fldr.split('/');
-            for(var j in out_ary){
-              if(out_ary[j] === ''){
-                out_ary.splice(j, 1);
-              }
-            }
-            //console.log(out_ary);
-            out_folders[out_ary.pop()] = out_fldr;
+      out_fldrs.forEach((out_fldr, i) => {
+        ensureFolder(out_fldr, (result)=>{
+          if(!result){
+            return cb(false);
           }
-        }else{
-          var out_ary = out_fldr.split('/');
-          for(var j in out_ary){
-            if(out_ary[j] === ''){
-              out_ary.splice(j, 1);
-            }
-          }
-          out_folders[out_ary.pop()] = out_fldr;
-        }
-      }
+        });
+      });
+      return cb(true);
     }else{
-      return false;
+      return cb(false);
     }
   }
   
-  this.setFailedFolder = function(fld_fldr){
-    if(!fs.existsSync(fld_fldr)){
-      if(fs.mkdirSync(fld_fldr)){
+  this.setFailedFolder = function(fld_fldr, cb){
+    ensureFolder(fld_fldr, (result)=>{
+      if(result){
         failed_folder = fld_fldr;
-        return true;
-      }else{
-        return false;
+        return cb(true);
       }
-    }else{
-      failed_folder = fld_fldr;
-      return true;
-    }
+      return cb(false);
+    });
   }
   
   this.setFunction = function(fn){
@@ -90,6 +58,35 @@ FileAgent = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
     if(is_active){
       this.start();
     }
+  }
+  
+  function ensureFolder(path, cb){
+    console.log('exists', path);
+    if(!fs.existsSync(path)){
+      var path_ary = path.split('/'),
+          cur_path = '/',
+          p = 0;
+      
+      path_ary.forEach((cur_fldr, i)=>{
+        var cur_path += cur_fldr+'/';
+        if(!fs.existsSync(cur_path)){
+          fs.mkdir(cur_path, (result)=>{
+            p++;
+            if(!result){
+              return cb(false);
+            }
+            console.log('created', cur_path);
+            if(p === path_ary.length) {
+              cb(false);
+            }
+          }); 
+        }else{
+          console.log(cur_path, 'exists');
+        }
+      });
+    }
+    console.log(path, 'exists');
+    cb(true);
   }
   
   function wrapperFunction(eventType, filename){
@@ -115,12 +112,16 @@ FileAgent = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
     }
   }
   
-  this.start = function(){
-    if(!active && fs.existsSync(in_folder)){
-      //console.log(in_folder);
-      watcher = fs.watch(in_folder, wrapperFunction);
-      active = true;
-    }
+  this.start = function(cb){
+    ensureFolder(in_folder, (result) => {
+      if(!active && fs.existsSync(in_folder)){
+        //console.log(in_folder);
+        watcher = fs.watch(in_folder, wrapperFunction);
+        active = true;
+        return cb(true);
+      }
+      return cb(false);
+    });
   }
   
   this.stop = function(){
@@ -132,16 +133,43 @@ FileAgent = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
   //Scalar.call(this);//For subclass
   Object.assign(this, {});
   /* Constructor code */
-  this.setOutFolders(out_fldrs);
-  this.setFailedFolder(fld_fldr);
-  this.setFunction(fn);
-  this.setInFolder(in_fldr, (re)=>{
-    //console.log('result', re);
-    callback(this, re);
+  var out = new Promise((resolve) => {
+    console.log('Setting out folder');
+    this.setOutFolders(out_fldrs, (result)=>{
+      if(result){
+        resolve();
+      }else{
+        callback('Could not ensure out folders.');
+      }
+    });
+  }),
+  failed = new Promise((resolve) => {
+    this.setFailedFolder(fld_fldr, (result)=>{
+      if(result){
+        resolve();
+      }else{
+        callback('Could not ensure failed folder.');
+      }
+    });
+  }),
+  inf = new Promise((resolve) => {
+    this.setInFolder(in_fldr, (result)=>{
+      if(result){
+        resolve();
+      }else{
+        callback('Could not ensure in folder.');
+      }
+    });
+  }),
+  fun = new Promise((resolve)=>{
+    this.setFunction(fn, ()=>{
+      resolve();
+    });
   });
-  
+  Promise.all([out, failed, inf, fun]).then(()=>{
+    callback();
+  });
 }
-
 
 FileAgent.prototype.constructor = FileAgent;
 module.exports = FileAgent;
