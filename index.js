@@ -61,7 +61,7 @@ FileAgent = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
   }
   
   function ensureFolder(path, cb){
-    console.log('exists', path);
+    //console.log('exists', path);
     if(!fs.existsSync(path)){
       var path_ary = path.split('/'),
           cur_path = '/',
