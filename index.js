@@ -2,8 +2,8 @@
 var fs = require('fs'),
     url = require('url'),
     ignore = ['.DS_Store'],
-Process = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
-  if ( !(this instanceof Process) ){return new Process(in_fldr, out_fldrs, fld_fldr, fn, callback);}
+FileAgent = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
+  if ( !(this instanceof FileAgent) ){return new FileAgent(in_fldr, out_fldrs, fld_fldr, fn, callback);}
   var in_folder,
       out_folders = {},
       failed_folder,
@@ -142,6 +142,6 @@ Process = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
   
 }
 
-//Process.prototype = Scalar.prototype;//For subclass
-Process.prototype.constructor = Process;
-module.exports = Process;
+
+FileAgent.prototype.constructor = FileAgent;
+module.exports = FileAgent;
