@@ -5,9 +5,9 @@ Example:
 var Process = require('file-agent'),
     /*
     parameters:
-        in folder path (string)
-        out folder paths (array)
-        failed folder path (string)
+        in folder path (string): The folder that will be watched. ** Use trailing slash ***
+        out folder paths (array): The folder(s) where the completed files can be moved to. ** Use trailing slash ***
+        failed folder path (string): The folder where failed items will be moved to. ** Use trailing slash ***
         callback (function)
           returns: event type (rename' or 'change)
           filename: Name of item that has appeared in the folder
