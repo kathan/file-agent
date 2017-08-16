@@ -44,8 +44,8 @@ var Process = require('file-agent'),
                 FileAgent object
 
 ### FileAgent class
-  #### Methods
-  ##### setInFolder 
+#### Methods:
+##### setInFolder 
       parameters:
         in_fldr: (string): Path of in folder
         callback (function): Called when in folder has been set.
