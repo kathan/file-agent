@@ -68,7 +68,7 @@ FileAgent = function(in_fldr, out_fldrs, fld_fldr, fn, callback){
           p = 0;
       
       path_ary.forEach((cur_fldr, i)=>{
-        var cur_path += cur_fldr+'/';
+        cur_path += cur_fldr+'/';
         if(!fs.existsSync(cur_path)){
           fs.mkdir(cur_path, (result)=>{
             p++;
