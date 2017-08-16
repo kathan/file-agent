@@ -50,4 +50,10 @@ var Process = require('file-agent'),
         in_fldr: (string): Path of in folder
         callback (function): Called when in folder has been set.
           returns result true:false
+          
+##### setOutFolders
+      parameters:
+        out_fldrs: (array): Array of out folder paths.
+        callback (function): Called when out folders have been set.
+          returns result true:false
     
