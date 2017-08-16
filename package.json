@@ -1,0 +1,29 @@
+{
+  "name": "file-agent",
+  "description": "A lightweight library written in node.js to automate hot folders.",
+  "keywords": [
+    "file",
+    "automation",
+    "hot",
+    "folder"
+  ],
+  "homepage": "https://github.com/kathan/file-agent",
+  "version": "0.2.0",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "maintainers": [
+    {
+      "name": "Darrel Kathan",
+      "email": "darrelkathan@gmail.com"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/kathan/file-agent/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kathan/file-agent.git"
+  },
+  "main": "./index.js"
+}
