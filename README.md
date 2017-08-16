@@ -5,9 +5,9 @@ Example:
 var Process = require('file-agent'),
     /*
     parameters:
-        in folder path (string)
-        out folder paths (array)
-        failed folder path (string)
+        in folder path (string): The folder that will be watched. ** Use trailing slash ***
+        out folder paths (array): The folder(s) where the completed files can be moved to. ** Use trailing slash ***
+        failed folder path (string): The folder where failed items will be moved to. ** Use trailing slash ***
         callback (function)
           returns: event type (rename' or 'change)
           filename: Name of item that has appeared in the folder
@@ -15,10 +15,14 @@ var Process = require('file-agent'),
           out_folders: The array of possible out folders
           failed_folder: The folder where failed items will go
           done: Callback that must be called when the file is done being processed.
+            parameters:
+                error
+                out folder
     */
     p = Process(`${__dirname}/in/`, [`${__dirname}/out1/`, `${__dirname}/out2/`], `${__dirname}/failed/`, (eventType, filename, in_folder, out_folders, failed_folder, done)=>{
       // fire this function any time an item appears in the folder
-      var d = new Date()
+      var d = new Date();
+      console.log(d.toString(), in_folder, '->', out_folders[1]);
       done(null, 'out2');
     }, (p, re)=>{
       // process has been created
