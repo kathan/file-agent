@@ -27,6 +27,6 @@
   },
   "dependencies":[
     "async"
-  ]
+  ],
   "main": "./index.js"
 }
