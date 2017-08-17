@@ -25,5 +25,8 @@
     "type": "git",
     "url": "git://github.com/kathan/file-agent.git"
   },
+  "dependencies":[
+    "async"
+  ]
   "main": "./index.js"
 }
